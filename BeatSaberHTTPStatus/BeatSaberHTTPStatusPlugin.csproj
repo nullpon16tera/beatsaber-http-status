@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -90,10 +90,9 @@
       <HintPath>$(GameDirPath)Plugins\BS_Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <ProjectReference Include="..\libs\websocket-sharp\websocket-sharp\websocket-sharp.csproj">
-      <Project>{B357BAC7-529E-4D81-A0D2-71041B19C8DE}</Project>
-      <Name>websocket-sharp</Name>
-    </ProjectReference>
+    <Reference Include="websocket-sharp, Version=1.0.1.0, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp-netstandard.1.0.1\lib\net45\websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="bin\**\*;obj\**\*" />
@@ -102,6 +101,12 @@
     <EmbeddedResource Include="$(IntermediateOutputPath)src/manifest.json">
       <LogicalName>$(RootNamespace).manifest.json</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Clean output directories before build -->
@@ -130,10 +135,10 @@
   </Target>
   <!-- Copy the plugin to the Beat Saber installation -->
   <Target Name="CopyToPlugins" AfterTargets="AfterBuild" Condition=" '$(CopyToPlugins)' != '' And $(CopyToPlugins) ">
-    <Message Text="Copying $(OutDir)BeatSaberHTTPStatus.dll to Plugins folder" Importance="high"/>
-    <Copy SourceFiles="$(OutDir)BeatSaberHTTPStatus.dll" DestinationFiles="$(GameDirPath)Plugins\BeatSaberHTTPStatus.dll"/>
-    <Message Text="Copying $(OutDir)websocket-sharp.dll to Beat Saber_Data folder" Importance="high"/>
-    <Copy SourceFiles="$(OutDir)websocket-sharp.dll" DestinationFiles="$(GameDirPath)Beat Saber_Data\Managed\websocket-sharp.dll"/>
+    <Message Text="Copying $(OutDir)BeatSaberHTTPStatus.dll to Plugins folder" Importance="high" />
+    <Copy SourceFiles="$(OutDir)BeatSaberHTTPStatus.dll" DestinationFiles="$(GameDirPath)Plugins\BeatSaberHTTPStatus.dll" />
+    <Message Text="Copying $(OutDir)websocket-sharp.dll to Beat Saber_Data folder" Importance="high" />
+    <Copy SourceFiles="$(OutDir)websocket-sharp.dll" DestinationFiles="$(GameDirPath)Beat Saber_Data\Managed\websocket-sharp.dll" />
   </Target>
   <!-- Package built DLLs into a zip -->
   <Target Name="CreateZip" AfterTargets="AfterBuild" Condition=" '$(OutputZip)' != '' And $(OutputZip) ">
@@ -192,15 +197,13 @@
       <Using Namespace="System" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
+      <Code Type="Fragment" Language="cs"><![CDATA[
           Log.LogMessage(string.Format("Replacing {0} in {1} to {2}", MatchExpression, InputFilename, ReplacementText));
           File.WriteAllText(
             OutputFilename,
             File.ReadAllText(InputFilename).Replace(MatchExpression, ReplacementText)
           );
-        ]]>
-      </Code>
+        ]]></Code>
     </Task>
   </UsingTask>
 </Project>

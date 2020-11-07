@@ -250,7 +250,7 @@ namespace BeatSaberHTTPStatus {
 			IBeatmapLevel level = diff.level;
 
 			gameStatus.partyMode = Gamemode.IsPartyActive;
-			gameStatus.mode = Gamemode.GameMode;
+			//gameStatus.mode = Gamemode.GameMode;
 
 			gameplayModifiers = gameplayCoreSceneSetupData.gameplayModifiers;
 			PlayerSpecificSettings playerSettings = gameplayCoreSceneSetupData.playerSpecificSettings;
